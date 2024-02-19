@@ -2,18 +2,18 @@
 
 
 #Modelo nulo para testar associacao de especies e deerminadas localidades 
+#install.packages("ca")
+#install.packages("vegan")
 
 library(ca)
 library(vegan)
+data(sipoo)
+modelo <- oecosimu(sipoo, decorana, "swap",burnin=100, thin=10, statistic="evals") #foi utilizado o metodo swap de aleatorizacao mas outros podem ser implementados
 
-modelo <- oecosimu(caraj2, decorana, "swap",burnin=100, thin=10, statistic="evals") #foi utilizado o metodo swap de aleatorizacao mas outros podem ser implementados
-plot(as.ts(out))
-lag.plot(as.ts(out))
-acf(as.ts(out)
-)
+densityplot(permustats(modelo), as.table = TRUE, layout = c(1,4))
 
-out
-require(lattice)
+equire(lattice)
+
 densityplot(out, as.table = TRUE)
 
 data(dune)
