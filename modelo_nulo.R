@@ -12,7 +12,32 @@ modelo <- oecosimu(sipoo, decorana, "swap",burnin=100, thin=10, statistic="evals
 
 densityplot(permustats(modelo), as.table = TRUE, layout = c(1,4))
 
-equire(lattice)
+## Traditional nestedness statistics (number of checkerboard units)
+nestedchecker(sipoo)
+test<-oecosimu(sipoo, nestedchecker, "r0")
+densityplot(permustats(test), as.table = TRUE, layout = c(1,4))
+
+## sequential model, one-sided test, a vector statistic
+
+out <- oecosimu(sipoo, decorana, "swap", burnin=100, thin=10, 
+   statistic="evals", alt = "greater")
+out
+
+## Inspect the swap sequence as a time series object
+plot(as.ts(out))
+lag.plot(as.ts(out))
+acf(as.ts(out))
+## Density plot
+densityplot(permustats(out), as.table = TRUE, layout = c(1,4))
+
+## Use quantitative null models to compare
+## mean Bray-Curtis dissimilarities
+data(dune)
+View(dune)
+meandist <- function(x) mean(vegdist(x, "bray"))
+mbc1 <- oecosimu(dune, meandist, "r2dtable")
+mbc1
+densityplot(permustats(mbc1), as.table = TRUE, layout = c(1,4))
 
 densityplot(out, as.table = TRUE)
 
