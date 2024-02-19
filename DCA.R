@@ -4,10 +4,10 @@ dados<-read.csv("dados.csv")
 
 # deletar a primeira coluna da matriz dados
 dados2 <- df <- subset(dados2, select = -1)
-
+View(dados2)
 
 data(varespec)
-vare.dca <- decorana(varespec)
+vare.dca <- decorana(dados2)
 vare.dca
 summary(vare.dca)
 plot(vare.dca)
