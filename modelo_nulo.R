@@ -8,11 +8,23 @@
 library(ca)
 library(vegan)
 data(sipoo)
-modelo <- oecosimu(sipoo, decorana, "swap",burnin=100, thin=10, statistic="evals") #foi utilizado o metodo swap de aleatorizacao mas outros podem ser implementados
+
+# carregar a matriz de dados dados.csv
+dados<-read.csv("dados.csv")
+View(dados)
+
+# deletar a primeira coluna da matriz dados
+dados2 <- df <- subset(dados, select = -1)
+View(dados2)
+
+modelo <- oecosimu(dados2, decorana, "swap",burnin=100, thin=10, statistic="evals") #foi utilizado o metodo swap de aleatorizacao mas outros podem ser implementados
 
 densityplot(permustats(modelo), as.table = TRUE, layout = c(1,4))
 
 ## Traditional nestedness statistics (number of checkerboard units)
+
+
+
 nestedchecker(sipoo)
 test<-oecosimu(sipoo, nestedchecker, "r0")
 densityplot(permustats(test), as.table = TRUE, layout = c(1,4))
