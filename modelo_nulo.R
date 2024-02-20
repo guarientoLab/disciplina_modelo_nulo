@@ -17,7 +17,16 @@ View(dados)
 dados2 <- df <- subset(dados, select = -1)
 View(dados2)
 
-modelo <- oecosimu(dados2, decorana, "swap",burnin=100, thin=10, statistic="evals") #foi utilizado o metodo swap de aleatorizacao mas outros podem ser implementados
+
+#fazer um codigo para calcular a soma das linhas da matriz dados2
+soma<-apply(dados2, 1, sum)
+
+#fazer um codigo para transformar a matriz dados2 em uma matriz binaria
+dados2<-ifelse(dados2>0, 1, 0)
+
+
+
+modelo <- oecosimu(dados2, decorana, "swap",burnin=100, thin=10, statistic="evals") 
 
 densityplot(permustats(modelo), as.table = TRUE, layout = c(1,4))
 
@@ -25,13 +34,13 @@ densityplot(permustats(modelo), as.table = TRUE, layout = c(1,4))
 
 
 
-nestedchecker(sipoo)
-test<-oecosimu(sipoo, nestedchecker, "r0")
+nestedchecker(dados2)
+test<-oecosimu(dados2, nestedchecker, "r0")
 densityplot(permustats(test), as.table = TRUE, layout = c(1,4))
 
 ## sequential model, one-sided test, a vector statistic
 
-out <- oecosimu(sipoo, decorana, "swap", burnin=100, thin=10, 
+out <- oecosimu(dados2, decorana, "swap", burnin=100, thin=10, 
    statistic="evals", alt = "greater")
 out
 
@@ -47,11 +56,13 @@ densityplot(permustats(out), as.table = TRUE, layout = c(1,4))
 data(dune)
 View(dune)
 meandist <- function(x) mean(vegdist(x, "bray"))
-mbc1 <- oecosimu(dune, meandist, "r2dtable")
+mbc1 <- oecosimu(dados2, meandist, "r2dtable")
 mbc1
 densityplot(permustats(mbc1), as.table = TRUE, layout = c(1,4))
 
 densityplot(out, as.table = TRUE)
+
+
 
 data(dune)
 meandist <- function(x) mean(vegdist(x, "bray"))
@@ -78,16 +89,14 @@ densityplot(null.model, as.table = TRUE)
 
 ##Mapa de temperatura
 
-getwd()
-dados<-read.csv("nest.csv")
-
-dados2<-df <- subset(dados, select = -1)
-dados2<-t(dados2)
 out <- nestedtemp(dados2)
 plot(out)
 
 
 plot(out, kind="incid")
+
+summary(out)
+
 
 ##Outro metodo para calculo do C-score
 
