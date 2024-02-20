@@ -11,11 +11,11 @@ data(sipoo)
 
 # carregar a matriz de dados dados.csv
 dados<-read.csv("dados.csv")
-View(dados)
+dados_n <- read.csv("nest.csv")
 
 # deletar a primeira coluna da matriz dados
 dados2 <- df <- subset(dados, select = -1)
-View(dados2)
+dados2_n <- df <- subset(dados_n, select = -1)
 
 
 #fazer um codigo para calcular a soma das linhas da matriz dados2
@@ -35,7 +35,7 @@ densityplot(permustats(modelo), as.table = TRUE, layout = c(1,4))
 
 
 nestedchecker(dados2)
-test<-oecosimu(dados2, nestedchecker, "r0")
+test<-oecosimu(dados2, nestedchecker, "swap")
 densityplot(permustats(test), as.table = TRUE, layout = c(1,4))
 
 ## sequential model, one-sided test, a vector statistic
@@ -53,14 +53,16 @@ densityplot(permustats(out), as.table = TRUE, layout = c(1,4))
 
 ## Use quantitative null models to compare
 ## mean Bray-Curtis dissimilarities
+
 data(dune)
 View(dune)
 meandist <- function(x) mean(vegdist(x, "bray"))
 mbc1 <- oecosimu(dados2, meandist, "r2dtable")
 mbc1
-densityplot(permustats(mbc1), as.table = TRUE, layout = c(1,4))
+densityplot(permustats(mbc1), as.table = TRUE)
 
 densityplot(out, as.table = TRUE)
+
 
 
 
@@ -90,6 +92,16 @@ densityplot(null.model, as.table = TRUE)
 ##Mapa de temperatura
 
 out <- nestedtemp(dados2)
+plot(out)
+
+
+plot(out, kind="incid")
+
+summary(out)
+
+##Mapa de temperatura
+
+out <- nestedtemp(dados2_n)
 plot(out)
 
 
